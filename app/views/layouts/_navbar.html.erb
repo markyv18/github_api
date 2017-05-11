@@ -1,23 +1,6 @@
-<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-  <div class="navbar-header">
-    <button class="navbar-toggle" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-  </div>
-  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    <ul class="nav navbar-nav navbar-left">
-      <a class="navbar-brand" href="/">Welcome to GitHub API Curious</a>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <% if current_user %>
-        <p class="navbar-text">Logged in as <%= current_user.username %></p>
-        <li><%= link_to "Logout", logout_path, method: :delete %></li>
-      <% else %>
-        <li><%= link_to "Click here to sign in with GitHub", github_login_path %></li>
-      <% end %>
-    </ul>
-  </div>
-</nav>
+<% if current_user %>
+  <p>Hello, <%= current_user.screen_name %></p><br>
+  <%= link_to "Logout", logout_path, method: :delete %>
+<% else %>
+  <%= link_to "Click here to sign in with GitHub", github_login_path %>
+<% end %>
