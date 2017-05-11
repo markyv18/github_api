@@ -4,7 +4,7 @@ feature "User can log in with GitHub" do
   context "with their existing user id" do
 
     before do
-      Capybara.app = Githubapi::Application
+      Capybara.app = GithubAPI::Application
       stub_oauth
     end
 
