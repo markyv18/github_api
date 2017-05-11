@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>GithubApi</title>
+    <title>Github_api</title>
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
-  </head>
-
-  <body>
-    <%= yield %>
-  </body>
-</html>
+     <%= stylesheet_link_tag    'application', media: 'all' %>
+     <%= javascript_include_tag 'application' %>
+   </head>
+   <body>
+     <%= render 'layouts/navbar' %>
+     <div class="container">
+       <% flash.each do |key, value| %>
+         <div class="alert alert-<%= key %>"><%= value %></div>
+       <% end %>
+       <%= yield %>
+       <%= render 'layouts/footer' %>
+     </div>
+   </body>
+ </html>

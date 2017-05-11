@@ -5,6 +5,8 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'omniauth-github'
+gem 'autoprefixer-rails'
 gem 'faraday'
 gem 'figaro'
 gem 'rails', '~> 5.0.2'
@@ -25,6 +27,9 @@ gem 'jbuilder', '~> 2.5'
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
+  gem 'pry'
+  gem 'capybara'
+  gem 'database_cleaner'
 end
 
 group :development do
