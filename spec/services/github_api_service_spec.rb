@@ -1,71 +1,38 @@
 require 'rails_helper'
 
-describe GithubService do
+describe "GithubService bridge" do
+  context " can .find_by(token) a user" do
+    it "and return that user" do
+      VCR.use_cassette("github_service_find_by") do
 
-  attr_reader :token
+        token = ENV["github_user_token"]
+        github_user = GithubService.find_user(token)
 
-  before do
-    @token = ENV['GITHUB_TOKEN']
-  end
-
-  context ".github_user_by(token)" do
-    it "returns a user's profile information" do
-      VCR.use_cassette("GithubService#github_user_by(token)") do
-        githubuser = GithubService.github_user_by(token)
-
-        expect(githubuser).to be_a(Hash)
-        expect(githubuser).to have_key(:login)
-        expect(githubuser).to have_key(:id)
-        expect(githubuser).to have_key(:name)
-        expect(githubuser).to have_key(:avatar_url)
-        expect(githubuser).to have_key(:starred_url)
-        expect(githubuser).to have_key(:followers)
-        expect(githubuser).to have_key(:following)
-        expect(githubuser[:login]).to be_a(String)
-        expect(githubuser[:id]).to be_an(Integer)
-        expect(githubuser[:name]).to be_a(String)
-        expect(githubuser[:avatar_url]).to be_a(String)
-        expect(githubuser[:starred_url]).to be_a(String)
-        expect(githubuser[:followers]).to be_an(Integer)
-        expect(githubuser[:following]).to be_an(Integer)
+        expect(github_user).to be_a(Hash)
+        expect(github_user).to have_key(:name)
+        expect(github_user).to have_key(:id)
+        expect(github_user).to have_key(:avatar_url)
+        expect(github_user[:name]).to be_a(String)
+        expect(github_user[:id]).to be_a(Integer)
+        expect(github_user[:avatar_url]).to be_a(String)
       end
     end
   end
 
-  context ".starred(token)" do
-    it "returns a user's starred repos" do
-      VCR.use_cassette("GithubService#starred(token)") do
-        starred_repos = GithubService.starred(token)
+  context "can .find github user's folowers" do
+    it "and returns the followers for that user" do
+      VCR.use_cassette("github_followers") do
 
-        expect(starred_repos).to be_an(Array)
-        expect(starred_repos.first).to be_a(Hash)
-        expect(starred_repos.last).to be_a(Hash)
-        expect(starred_repos[0][:name]).to be_a(String)
+        token = ENV["github_user_token"]
+
+        github_followers = GithubService.followers(token)
+        github_follower = github_followers.first
+        expect(github_followers).to be_an(Array)
+        expect(github_followers.count).to eq(4)
+        expect(github_follower).to be_a(Hash)
+        expect(github_follower).to have_key(:login)
+        expect(github_follower[:login]).to be_a(String)
       end
     end
   end
-
-  context ".followers(token)" do
-    it "returns a user's followers" do
-      VCR.use_cassette("GithubService#followers(token)") do
-        followers = GithubService.followers(token)
-
-        expect(followers).to be_an(Array)
-        expect(followers.first).to be_a(Hash)
-        expect(followers.first[:login]).to be_a(String)
-      end
-    end
-  end
-
-  context ".following(token)" do
-    it "returns who a user is following" do
-      VCR.use_cassette("GithubService#following(token)") do
-        following = GithubService.following(token)
-
-        expect(following).to be_an(Array)
-        expect(following.first).to be_a(Hash)
-        expect(following.first[:login]).to be_a(String)
-      end
-    end
-  end
-end 
+end

@@ -23,8 +23,8 @@ feature "User can log in with GitHub" do
     end
 
     scenario 'and when they click the login root path they are signed in' do
+      VCR.use_cassette("github_user_login") do
       visit '/'
-
       expect(page.status_code).to eq(200)
 
       click_link "Click here to sign in with GitHub"
@@ -33,6 +33,7 @@ feature "User can log in with GitHub" do
 
       expect(page).to have_content("Hello, markyv18")
       expect(page.body).to have_link("Logout")
+    end
     end
   end
 end

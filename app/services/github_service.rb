@@ -1,8 +1,11 @@
 class GithubService
-
-  def self.users_by(token)
-    response = Faraday.get("http://api.github.com/user?access_token=#{token}")
-    JSON.parse(response.body) #, symbolize_names: true)[:results]
+  def self.find_user(token)
+    response = Faraday.get("https://api.github.com/user?access_token=#{token}")
+    JSON.parse(response.body, symbolize_names: true)
   end
 
+  def self.followers(token)
+    response = Faraday.get("https://api.github.com/user/followers?access_token=#{token}")
+    JSON.parse(response.body, symbolize_names: true)
+  end
 end
